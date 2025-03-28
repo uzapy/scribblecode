@@ -14,6 +14,9 @@ def main():
     with open ("../VDJ/azure_table_connection_string", 'r', encoding='utf-8') as connection_string_file :
         connection_string = connection_string_file.read()
 
+    with open ("./music_path_from_root", 'r', encoding='utf-8') as path_file :
+        path_from_root = path_file.read()
+
     try :
         table_client = TableClient.from_connection_string(conn_str=connection_string, table_name=table_name)
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
@@ -29,7 +32,7 @@ def main():
                     continue
 
                 # Extract blob path from file path
-                blob_path = os.path.relpath(file_path, " add path from root to music folder here")
+                blob_path = os.path.relpath(file_path, path_from_root)
                 blob_client = container_client.get_blob_client(blob_path)
 
                 with open(file_path, "rb") as data:

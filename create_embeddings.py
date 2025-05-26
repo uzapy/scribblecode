@@ -12,16 +12,16 @@ import vggish_postprocess
 from azure.data.tables import TableClient
 from azure.cosmos import CosmosClient, exceptions
 
-table_connection_string_file = "../VDJ/azure_table_connection_string"
+table_connection_string_file = "/Users/uzapy/Projects/VDJ/azure_table_connection_string"
 table_name = "playlists"
-cosmosDB_connection_string_file = "../VDJ/cosmosdb_connection_string"
+cosmosDB_connection_string_file = "/Users/uzapy/Projects/VDJ/cosmosdb_connection_string"
 cosmosDB_name = "vdjdb"
 cosmosDB_container = "embeddings"
 output_file = "execution.log"
 
 # Path to the VGGish model checkpoint
-CHECKPOINT_PATH = 'models/research/audioset/vggish/vggish_model.ckpt'
-PCA_PARAMS_PATH = 'models/research/audioset/vggish/vggish_pca_params.npz'
+CHECKPOINT_PATH = 'vggish_model.ckpt'
+PCA_PARAMS_PATH = 'vggish_pca_params.npz'
 
 chunk_duration_ms = 975
 sample_rate = 16000
@@ -108,7 +108,7 @@ def main():
                         # Create chunk and save to disk
                         chunk = y_resampled[start_frame:end_frame]
                         chunk_filename = f"chunk_{artist}_{title}_{i}.wav"
-                        chunk_filename = chunk_filename.replace(" ", "_")
+                        chunk_filename = chunk_filename.replace(" ", "_").replace("/", "_")
                         chunk_path = os.path.join("chunks", chunk_filename)
                         sf.write(chunk_path, chunk, sample_rate)
 
@@ -128,7 +128,7 @@ def main():
                                 "artist": artist,
                                 "title": title,
                                 "original_path": file_path,
-                                "playlist": "90s", # Assuming all are '90s' for now
+                                "playlist": "90s",
                                 "chunk": i,
                                 "embedding": embeddings[0].tolist()
                             }
@@ -157,7 +157,7 @@ def main():
 
                     counter += 1
 
-                    if counter >= 10:
+                    if counter >= 500:
                         break
 
                 except Exception as e:

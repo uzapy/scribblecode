@@ -3,7 +3,7 @@ from azure.data.tables import TableClient
 from azure.core.exceptions import ResourceNotFoundError
 
 counter = 0
-table_name = "ytvideos"
+table_name = "ytvideos2"
 
 def main():
     global counter
@@ -32,6 +32,8 @@ def main():
                 rating -=1
             if "lyrixa" in channelName :
                 rating -=1
+            if "karaoke" in channelName :
+                rating -=1
 
             if "vevo" in channelName :
                 rating +=1
@@ -47,6 +49,10 @@ def main():
             if "lyric" in videoTitle :
                 rating -= 1
             if "audio" in videoTitle :
+                rating -= 1
+            if "cover" in videoTitle :
+                rating -= 1
+            if "instrumental" in videoTitle :
                 rating -= 1
 
             if "offiziell" in videoTitle :

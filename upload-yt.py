@@ -8,7 +8,7 @@ from azure.core.exceptions import ResourceNotFoundError
 counter = 0
 table_name = "playlists"
 container_name = "videos"
-main_playlist = "90s"
+main_playlist = "80s"
 youtube_base_URL = "https://www.youtube.com/watch?v="
 
 def main():
@@ -27,7 +27,7 @@ def main():
 
         for entity in table_client.list_entities() :
 
-            if entity.get("playlist") == main_playlist and entity.get("video") is not None and entity.get("videoFilePath") is None:
+            if entity.get("playlist") == main_playlist and entity.get("video") and not entity.get("videoFilePath"):
                 file_path = entity.get("path")
 
                 # Extract blob path from file path
@@ -72,7 +72,7 @@ def main():
 
 
                 counter += 1
-                time.sleep(10)
+                time.sleep(60)
 
     except Exception as e:
         print(f"Error updating Azure Table rows: {e}")
